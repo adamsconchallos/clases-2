@@ -5,7 +5,7 @@ author: Adams Ceballos
 date: 572XXX
 output:
   xaringan::moon_reader:
-    css: ['default', 'metropolis', 'metropolis-fonts', 'my-css.css']
+    css: ['my-css.css','default', 'metropolis', 'metropolis-fonts']
     self_contained: false
     nature:
       highlightStyle: github
