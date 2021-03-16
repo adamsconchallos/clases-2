@@ -1,0 +1,901 @@
+---
+title: "Clase 2"
+subtitle: "Teoría de las externalidades"
+author: Adams Ceballos
+date: 572XXX
+output:
+  xaringan::moon_reader:
+    css: ['default', 'metropolis', 'metropolis-fonts', 'my-css.css']
+    self_contained: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+
+
+---
+exclude: true
+```{r setup}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  tidyverse, tidylog, xaringanExtra, Ryacas, rlang
+)
+options(htmltools.dir.version = FALSE)
+knitr::opts_hooks$set(fig.callout = function(options) {
+  if (options$fig.callout) {
+    options$echo <- FALSE
+  }
+knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+  options
+})
+```
+```{r xaringanExtra, echo = FALSE}
+xaringanExtra::use_xaringan_extra(c("tile_view", "panelset", "webcam"))
+```
+```{r echo=FALSE}
+xaringanExtra::style_panelset(panel_tab_color_active = "red")
+```
+```{r xaringanExtra-share-again, echo=FALSE}
+xaringanExtra::use_share_again()
+```
+
+```{r echo=FALSE}
+xaringanExtra::embed_xaringan(
+  url = "https://github.com/adamsconchallos/adamsconchallos.github.io/blob/master/assets/slides/clase-2.html",
+  ratio = "16:9"
+)
+
+```
+
+```{css, echo=FALSE}
+/* custom.css */
+.left-code {
+  color: #777;
+  width: 38%;
+  height: 92%;
+  float: left;
+}
+.right-plot {
+  width: 60%;
+  float: right;
+  padding-left: 1%;
+}
+.plot-callout {
+  height: 225px;
+  width: 450px;
+  bottom: 5%;
+  right: 5%;
+  position: absolute;
+  padding: 0px;
+  z-index: 100;
+}
+.plot-callout img {
+  width: 100%;
+  border: 4px solid #23373B;
+}
+```
+
+
+---
+Diapositivas basadas en los capítulos 1.1, 1.2 y 1.3 del libro
+
+> A course in Environmental Economics: Theory, Policy, and Practice by Daniel J. Phaneuf and Till Requate, 2017
+
+---
+
+# Bases teóricas del bienestar
+
+.pull-left[
+El punto de partida para desarrollar la base teórica del bienestar para economía ambiental es la definición de un criterio normativo
+
+El criterio para juzgar la deseabilidad de un outcome económico es el .hi-blue[Óptimo de Pareto]
+]
+
+.pull-right[
+
+![Vifredo Pareto](2-theory-of-externalities_files/figures/pareto.jpg)
+
+]
+
+---
+
+# Bases teóricas del bienestar
+
+> Un outcome económico es Pareto óptimo si una redistribución de recursos no puede mejorar el bienestar de al menos una persona sin hacer que otra esté peor
+
+--
+
+Existe un potencial para una mejora paretiana si el bienestar de una persona puede ser mejorado sin empeorar el de cualquiera otra 
+
+--
+
+El óptimo de Pareto no dice nada sobre qué bienestar importa más. Hace vista gorda a los temas de equidad y justicia. La .hi-red[eficiencia] es el foco
+
+--
+
+Esta virtud, sin embargo, es también su vicio.
+
+---
+
+# Bases teóricas del bienestar
+
+La debilidad en el criterio normativo es, parcialmente, compensada por el primer y segundo teorema del bienstar:
+
+--
+
+.b[Primer teorema del bienestar:] Si los mercados son completos y perfectamente competitivos, un sistema descentralizado de precios en conjunto con un comportamiento interesado provee una distribución de recursos Pareto óptima. 
+
+--
+
+.b[Segundo teorema del bienestar:] Si los mercados son completos y perfectamente competitivos, cualquier distribución Pareto óptima puede ser soportada por un sistema de precios proveniente de una redistribución apropiada del ingreso vía impuestos y transferencias de suma fija.
+
+---
+
+# Bases teóricas del bienestar
+
+El atractivo de los teoremas del bienestar son claros: .hi-blue[si las condiciones son satisfechas, podemos alcanzar la torta más grande (eficiencia) dejando funcionar al libre mercado]
+
+--
+
+Si la sociedad percibe que alguien obtiene un trozo de torta más grande, podemos transferir ingreso (suma fija) para ajustar la distribución a alguna más sabrosa y aún tener eficiencia
+
+--
+
+Desafortunadamente, las condiciones requeridas por los teoremas del bienestar generalmente no se cumplen, especialmente en economía ambiental
+
+--
+
+por qué?
+
+---
+
+# Externalidades
+
+  ![externalities](2-theory-of-externalities_files/figures/externalities.png)
+---
+
+#Externalidades
+  
+La mayoría de los bienes ambientales no tienen mercado o precio 
+
+--
+
+No hay precio para el ruido; contaminación del aire, agua; biodiversidad, etc. 
+
+--
+
+por qué?
+
+--
+
+Generalmente porque los derechos de propiedad no están bien definidos: tiene una fábrica el derecho a contaminar o tu tienes el derecho a aire limpio? 
+
+--
+
+No hay mercados completos!
+
+---
+
+# Externalidades
+
+Un concepto clave en economía ambiental es la externalidad
+
+--
+
+> Una .hi-blue[externalidad] existe cuando la utilidad o función de producción del agente A depende directamente de variables reales escogidas por otro agente B, sin ofrecer una compensación o alguna atención al efecto en el bienestar de A
+
+--
+
+Un aspecto crítico de la definición es el concepto de **variable real**
+
+--
+
+Ruido, contaminación, etc
+
+--
+
+No cambios en salarios o precios de mercados regulares
+
+---
+
+# Bienes públicos
+![smog](2-theory-of-externalities_files/figures/smog.jpg)
+
+---
+
+# Bienes públicos
+
+Otro concepto muy relacionado con las externalidades son los bienes públicos
+
+--
+
+> Un .hi-blue[Bien público] es un bien que es no rival y no exclusivo. El bien puede simultaneamente ser disfrutado por muchas personas (no rivalidad), y a nadie se le puede impedir disfrutarlo (no exclusividad).
+
+--
+
+La no exclusividad causa problemas a los teoremas del bienestar: Cómo un sistema descentralizado de precios podría funcionar si cualquiera puede disfrutar de un bien cuando quieran y sin pagarlo?
+
+--
+
+Este es el clásico problema de .hi-blue[free rider]
+
+---
+
+# Nuestro modelo inicial
+
+Construyamos nuestro modelo de economía
+
+--
+
+Supongamos que hay:
+
+--
+
+- Dos personas
+--
+
+- Un bien sucio
+--
+
+- Un bien limpio
+--
+
+- Trabajo como el único factor de producción
+
+
+---
+
+# Nuestro modelo inicial
+
+Definamos la utilidad de cada persona $i$ como $U_i(x_i,z_i,E)$ para $i=1,2$
+
+--
+
+$x_i$ es el consumo del bien sucio,  
+
+--
+
+$z_i$ es el consumo del bien limpio,  
+
+--
+
+y $E$ es el nivel de emisiones de contaminación
+
+---
+
+# Nuestro modelo inicial
+
+Producir $x$ causa las emisiones $E$
+
+--
+
+Podemos definir la producción de $x$ como: $x = f(l_x,E)$ donde $f_l > 0$ y $f_E > 0$
+
+--
+
+Las emisiones son definidas como *input*, por lo que si quieres menos emisiones, debes producir menos porque $f_E > 0$
+
+---
+
+# Nuestro modelo inicial
+
+La producción del bien limpio $z$ solo usa trabajo: $z = g(l_z)$
+
+--
+
+El trabajo puede ser medido en horas y existen tantas horas de trabajo $l$ tal que $l_x + l_z = l$
+
+--
+
+Esto es todo lo que necesitamos para el modelo. Ahora armemos el modelo
+
+---
+
+# Disyuntivas de consumo
+
+Una pieza clave en economía es la .hi-blue[tasa marginal de sustitución] (MRS)
+
+--
+
+La MRS nos muestra cómo un individuo intercambia consumo entre dos bienes y es definida como:
+$$MRS^{xz}_1 \equiv {\partial U_1 \over \partial x_1}\Bigg/{\partial U_1 \over \partial z_1} \equiv dz_1/dx_1$$
+
+--
+
+nos dice cuántas unidades de $z$ la persona 1 está dispuesta a dar para obtener 1 unidad más de $x$
+
+--
+
+Es solo la pendiente de la curva de indiferencia
+
+---
+
+# Disyuntivas de producción
+
+Otra pieza clave es la .hi-blue[Tasa marginal de transformación] (MRT)
+
+--
+
+La MRT nos dice cómo una firma intercambia producción entre distintos bienes y se define como:
+$$MRT^{xz}_1 \equiv {\partial g \over \partial l_z}\Bigg/{\partial f \over \partial l_x} \equiv MRT \equiv dz/dx$$
+
+--
+
+Nos dice cuántas unidades de $z$ la firma tiene que dar para producir 1 unidad adicional de $x$
+
+--
+
+Es la pendiente de la FPP
+
+---
+
+# Óptimo de Pareto
+
+Derivemos las condiciones para obtener la distribución de recursos Pareto óptima
+
+--
+
+Cómo lo hacemos?
+
+--
+
+Siguiendo la definición de óptimo de Pareto: 
+
+--
+
+Encontrar los niveles de consumo, trabajo y contaminación que maximice el bienestar de una persona sin hacer que la otra empeore en relación a un benchmark (arbitrario)
+
+--
+
+Satisfaciendo las restricciones de tecnología (producción) y dotación (trabajo)
+
+---
+
+# Óptimo de Pareto
+
+El problema está dado por:
+\begin{gather}
+  \max_{x_1,x_2,z_1,z_2,l_x,l_z,E} U_1(x_1,z_1,E) \,\,\,\,\, \text{subject to:} \\
+  U_2(x_2,z_2,E)  \geq \bar{u}_2 \tag{1}\\ 
+  f(l_x,E) = x_1 + x_2 \tag{2}\\
+  g(l_z) = z_1 + z_2 \tag{3} \\
+  l = l_x + l_z \tag{4}
+\end{gather}
+
+Estamos maximizando la utilidad de la persona 1 sujeta a (1) mantender la utilidad de la persona 2 en un nivel fijo, (2,3) restricciones de producción, (4) distribución total de trabajo
+
+---
+
+# Óptimo de Pareto
+
+El lagrangiano del problema es:
+\begin{align}
+  \mathcal{L} = \max_{x_1,x_2,z_1,z_2,l_x,l_z,E}& U_1(x_1,z_1,E) \\
+    &+ \lambda_u[U_2(x_2,z_2,E) - \bar{u}_2] \\ 
+    &+ \lambda_x[f(l_x,E) - x_1 - x_2] \\
+    &+ \lambda_z[g(l_z) - z_1-z_2] \\
+    &+ \lambda_l[l - l_x - l_z]
+\end{align}
+
+--
+
+Veamos las FOCs por etapas
+
+---
+
+# Óptimo de Pareto
+
+Las FOCs están en las pestañas
+
+--
+
+```{r echo=FALSE}
+xaringanExtra::style_panelset_tabs(foreground = "honeydew", background = "#396630",inactive_opacity = 1)
+```
+.panelset[
+
+.panel[.panel-name[Problema]
+
+$$\max_{x_1,x_2,z_1,z_2,l_x,l_z,E} U_1(x_1,z_1,E) \\+ \lambda_u[U_2(x_2,z_2,E) - \bar{u}_2] \\+ \lambda_x[f(l_x,E) - x_1 - x_2] \\+ \lambda_z[g(l_z) - z_1-z_2] \\+ \lambda_l[l - l_x - l_z]$$
+  
+]
+  
+.panel[.panel-name[Consumo]
+  
+$${\partial U_1 \over \partial x_1} 
+= \lambda_x, 
+\qquad 
+{\partial U_1 \over \partial z_1} 
+= \lambda_z$$
+  
+y
+  
+$$\lambda_u{\partial U_2 \over \partial x_2} 
+= \lambda_x, 
+\qquad 
+\lambda_u{\partial U_2 \over \partial z_2} 
+= \lambda_z$$
+
+La utilidad marginal es igual al precio sombra del bien
+  
+]
+  
+.panel[.panel-name[Trabajo]
+
+  
+$$\lambda_x{\partial f \over \partial l_x} 
+= \lambda_l, \qquad \lambda_z{\partial g \over \partial l_z} 
+= \lambda_l$$
+  
+El producto marginal es igual al precio sombra del trabajo
+  
+]
+  
+.panel[.panel-name[Emisiones]
+
+  
+$$-\left[{\partial U_1 \over \partial E} + \lambda_u{\partial U_2 \over \partial E}\right] 
+= \lambda_x {\partial f \over \partial E}$$
+El costo de la utilidad marginal de las emisiones es igual al producto marginal de las emisiones
+  
+]
+
+]
+
+---
+
+# Óptimo de Pareto
+
+Eficiencia en ...
+
+```{r echo=FALSE}
+xaringanExtra::style_panelset_tabs(foreground = "honeydew", background = "#396630",inactive_opacity = 1)
+```
+.panelset[
+
+.panel[.panel-name[Consumo]
+
+Las FOCs del consumo nos dan el consumo eficiente
+$$MRS^{xz}_1 \equiv {\partial U_1 \over \partial x_1}\Bigg/{\partial U_1 \over \partial z_1}
+= \lambda_x/\lambda_z
+= {\partial U_2 \over \partial x_2}\Bigg/{\partial U_2 \over \partial z_2} \equiv MRS^{xz}_2$$
+La eficiencia en consumo requiere que la MRS entre individuos sea igual (i.e. las pendientes de las CI son iguales) 
+
+]
+
+.panel[.panel-name[Intercambio]
+
+Las FOCs the oferta y trabajo nos dan
+$$ MRS^{xz}_i \equiv {\partial U_i \over \partial x_i}\Bigg/{\partial U_i \over \partial z_i}
+= \lambda_x/\lambda_z
+= {\partial g \over \partial l_z}\Bigg/{\partial f \over \partial l_x} \equiv MRT^{xz}$$
+MRSs deben ser igual a la MRT
+
+Las pendientes de las CIs deben ser igual a la FPP
+
+]
+
+
+.panel[.panel-name[Emisiones]
+
+Sustituyendo en las FOCs de consumo para obtener una nueva expresión para la eficiencia en emisiones:
+$$MRS^{Ex}_1 + MRS^{Ex}_2 \equiv -{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} - {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2} = {\partial f \over \partial E}$$
+El producto marginal de las emisiones debe ser igual a la .hi-red[suma] the las MRS entre $x$ y $E$ entre los individuos
+
+]
+
+]
+
+---
+
+# Eficiencia en emisiones: un poco más
+
+Una reducción en $E$ 
+
+--
+
+- incrementa directamente la utilidad de ambos, 
+
+--
+
+- Disminuye indirectamente la utilidad porque hay una menor cantidad de $x$ para el consumo.
+
+--
+
+  - La disminución depende de la intensidad de las preferencias individuales
+  
+--
+
+- La ecuación también sirve para ilustrar la simetría, en casos particulares, entre externalidades y bienes públicos
+
+---
+
+<!-- # Intuición general -->
+
+<!-- Podemos entender (probar) por qué estas condiciones necesitan ser satisfechas vía la consideración de casos en los que no se cumplen (contra ejemplo) -->
+
+<!-- Para cualquier caso en el que las tres condiciones de eficiencia no se cumplan, podemos mostrar que existe una .hi-blue[mejora Paretiana] $\rightarrow$ las condiciones deben cumplirse para la optimalidad Paretiana -->
+
+<!-- > Una mejora de Pareto es una reasignación de recursos que mejora la situación de al menos una persona sin empeorar la de ninguna otra. -->
+
+
+<!-- --- -->
+
+<!-- # Eficiencia en el consumo -->
+
+<!-- Supongamos que la MRS de Burdiles es 2, y el MRS de Veloso es 4, las MRS nos dicen que: -->
+
+<!-- -- -->
+
+<!-- - Burdiles está dispuesto a renunciar a 2 unidades de $z$ por 1 unidad más de $x$ -->
+
+<!-- -- -->
+
+<!-- - Veloso está dispuesto a renunciar a 4 unidades de $z$ por 1 unidad más de $x$ -->
+
+<!-- -- -->
+
+<!-- Si Veloso le da a Burdiles 3 unidades de $z$ a cambio de 1 unidad de $x$, .hi-blue[ambos están mejor] -->
+
+<!-- -- -->
+
+<!-- Veloso estaba dispuesto a renunciar a 4 unidades, Burdiles estaba dispuesto a aceptar 2 unidades $\rightarrow$ ambos están 1 unidad de $z$ mejor -->
+
+
+
+<!-- --- -->
+
+<!-- # Eficiencia en el intercambio -->
+
+<!-- Suponga $MRS^{xz}$ es 1 y $MRT^{xz}$ es 3, la MRS y MRT dicen que: -->
+
+<!-- -- -->
+
+<!-- - El consumidor está dispuesto a dar 1 unidad de $x$ por 1 unidad de $z$ -->
+
+<!-- -- -->
+
+<!-- - Si movemos el trabajo desde producir $x$ a $z$ podemos obtener 3 unidades de $z$ por 1 unidad de $x$ -->
+
+<!-- -- -->
+
+<!-- Si damos 1 unidad de $x$, obtenemos 3 unidades de $z \rightarrow$ el consumidor tiene 2 unidades más de $z$ de lo que necesita para estar mejor -->
+
+
+<!-- --- -->
+
+<!-- # Eficiencia en emisiones -->
+
+
+<!-- Suponer $\text{MRS}^{Ex}_1$ + $\text{MRS}^{Ex}_2 = 3$ y ${\partial f \over \partial E} = 4$, estas condiciones nos dicen que: -->
+<!-- -- -->
+
+<!-- - El costo total de consumir 1 unidad de $E$ en términos de unidades de $x$ es 3 para ambos consumidores -->
+
+<!-- -- -->
+
+<!-- - 1 unidad adicional de $E$ nos da 4 unidades adicionales de $x$ -->
+
+<!-- -- -->
+
+<!-- Si incrementamos $E$ en 1 unidad, los beneficios (4) superan a los costos (3), podemos hacer que los consumidores estén mejor -->
+
+<!-- --- -->
+
+# Mercados competitivos
+
+Ahora conocemos las condiciones necesarias para una distribucción Paretiana que nos sirva como un baseline
+
+--
+
+nos podemos preguntar si el libre mercado puede alcanzar un resultado Pareto óptimo
+
+--
+
+En el libre mercado:
+
+- Consumidores toman el precio de un bien
+- Las firmas toman el precio de los inputs
+
+---
+
+# Mercados competitivos
+
+sean $p_x$ y $p_z$ los precios de $x$ y $z$
+
+--
+
+sea $w$ el salario del trabajo
+
+--
+
+sea $y_i$ el ingreso de la persona $i$
+
+--
+
+Cada persona maximiza su utilidad
+
+--
+
+Cada firma maximiza su beneficio
+
+---
+
+# Mercados competitivos
+
+El problema de maximización de utilidad es
+$$\max_{x_i,z_i} U_i(x_i,z_i,E) \,\,\,\, \text{subject to: } y_i = p_x x_i + p_z z_i$$
+
+--
+
+El lagrangiano es
+
+$$\max_{x_i,z_i} U_i(x_i,z_i,E) + \lambda_i[y_i - p_x x_i - p_z z_i]$$
+--
+
+Las FOcs son:
+$${\partial U_i \over \partial x_i} = \lambda_i p_x, \qquad {\partial U_i \over \partial z_i} = \lambda_i p_z$$
+
+---
+
+# Mercados competitivos
+
+El problema de max de las firmas para producir $z$ y $x$ son:
+$$\max_{l_z} p_z g(l_z) - w l_z, \qquad  \max_{l_x, E} p_xf(l_x, E) - w l_x$$
+
+--
+
+Esto nos da las FOCs de la firma para $x$:
+$$p_x {\partial f \over \partial l_x} = w \qquad p_x {\partial f \over \partial E} = 0$$
+y para producir $z$
+$$p_z {\partial g \over \partial l_z} = w$$
+
+---
+
+# Mercados competitivos: Consumo
+
+FOC del consumo:
+$${\partial U_i \over \partial x_i} = \lambda_i p_x, \qquad {\partial U_i \over \partial z_i} = \lambda_i p_z$$
+
+tenemos:
+
+--
+
+$${\partial U_1 \over \partial x_1} \bigg/ {\partial U_1 \over \partial z_1}
+=  p_x/p_z
+= {\partial U_2 \over \partial x_2} \bigg/ {\partial U_2 \over \partial z_2}$$
+
+--
+
+LA condición de igualdad de la MRS para el consumo se cumple
+
+
+---
+
+# Mercados competitivos: Intercambio
+
+Combinando las FOCs de consumo y trabajo tenemos:
+
+--
+
+$${\partial U_i \over \partial x_i} \bigg/ {\partial U_i \over \partial z_i}
+=  p_x/p_z
+= {\partial g \over \partial l_z} \bigg/ {\partial f \over \partial l_x}$$
+--
+
+La condición MRS=MRT para eficiencia en el intercambio se cumple
+
+
+---
+
+# Mercados competitivos: emisiones
+
+
+Condición de eficiencia para emisiones:
+$$-{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} - {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2} = {\partial f \over \partial E}$$
+
+--
+
+.hi-red[No se cumple!]
+
+--
+
+El libre mercado no provee incentivos para que la firma trate $E$ como escaso o para que tenga en cuenta sus impactos en los consumidores: la firma enfrenta un precio *0* en la contaminación
+
+---
+
+# Intervención de mercado
+
+Gran parte de la economía ambiental consiste en diseñar políticas para corregir las fallas de mercado
+
+--
+
+EL punto de partida intelectual viene de Pigou: .hi-blue[Las externalidades pueden ser corregidas imponiendo un cobro sobre las emisiones]
+
+--
+
+Suponer que la firma ahora tiene que pagar $\tau^*$ por unidad de emisiones, podremos alcanzar un outcome eficiente?
+
+---
+
+# Impuestos a las emisiones
+
+El problema de la firma ahora es:
+$$\max_{l_x, E} p_xf(l_x, E) - w l_z - \tau^* E$$
+con FOC:
+$$p_x {\partial f \over \partial l_x} = w, \qquad p_x {\partial f \over \partial E} = \tau^*$$
+
+--
+
+.hi-red[existe un pago que puede satisfacer la condición de eficiencia en las emisiones alcanzando un resultado Pareto óptimo?]
+
+
+---
+
+# Impuesto a las emisiones
+```{r echo=FALSE}
+xaringanExtra::style_panelset_tabs(foreground = "honeydew", background = "#396630",inactive_opacity = 1)
+```
+
+.panelset[
+
+.panel[.panel-name[Condiciones]
+
+Recordemos que la FOC de la empresa es:
+$$p_x {\partial f \over \partial E} = \tau^*$$
+y la condición de eficiencia de las emisiones es:
+$$-{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} - {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2} = {\partial f \over \partial E}$$
+
+]
+
+.panel[.panel-name[Solución]
+
+Notar que si multiplicamos el lado derecho de la condición de eficiencia de las emisiones por $p_x$, es igual al lado izquierdo de la FOC de la firma
+
+El impuesto óptimo de Pareto es:
+$$\tau^* = -p_x\left[{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} + {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2}\right]$$
+Este impuesto es puede hacer que la condición de maximización de ingreso de la firma sea consistente con la optimalidad paretiana
+
+]
+
+]
+
+---
+
+# Impuesto a las emisiones
+
+$$\tau^* = -p_x\left[{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} + {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2}\right]$$
+
+hay dos partes para la intuición del impuesto:
+
+--
+
+1. $-\left[{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} + {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2}\right]$ nos dice cuánto $x$ necesitamos para compensar al consumidor por la unidad adicional de $E$ y mantener su utilidad constante
+--
+
+2. $p_x$ nos dice del valor en pesos de la cantidad $x$
+
+--
+
+.hi-blue[El impuesto es el costo de la utilidad marginal de las emisiones expresado en pesos]
+
+---
+
+# Impuesto a las emisiones
+
+$$\tau^* = -p_x\left[{\partial U_1 \over \partial E}\bigg/{\partial U_1 \over \partial x_1} + {\partial U_2 \over \partial E}\bigg/{\partial U_2 \over \partial x_2}\right]$$
+
+El impuesto depende de la utilidad marginal del consumo, esto implica dos cosas:
+
+--
+
+1. El impuesto depende de la distribución del ingreso
+--
+
+2. El impuesto depende de la distribución de las dotaciones en general (e.g. ingreso, trabajo)
+
+--
+
+.hi-red[Cambios en la dotación de ingreso o factores van a producir, por lo tanto, cambios en el nivel de impuestos que es Pareto óptimo]
+
+---
+
+# Impuesto a las emisiones: gráfico
+
+.pull-left[
+```{r emissions_taxation, echo = FALSE, fig.show = 'hide', warning = F}
+vmp <- function(x) 30 - x
+muc1 <- function(x) 5 + 0.5 * x
+muc2 <- function(x) 15 + 0.5 * x
+muc_sum <- function(x) 20 + x
+ggplot() +
+  annotate("segment", x = 0, xend = 5, y = 25, yend = 25,
+           linetype = "dashed", size = 1.5, color = "grey50") +
+  annotate("segment", x = 5, xend = 5, y = 0, yend = 25,
+           linetype = "dashed", size = 1.5, color = "grey50") +
+  annotate("text", x = 28, y = 15, label = "MUC1", size = 8) +
+  annotate("text", x = 28, y = 33, label = "MUC2", size = 8) +
+  annotate("text", x = 18, y = 45, label = "Sum of MUC", size = 8) +
+  annotate("text", x = 28, y = 7, label = "VMP", size = 8) +
+  stat_function(fun = muc1, color = "#638ccc", size = 1.5) +
+  stat_function(fun = muc2, color = "#638ccc", size = 1.5) +
+  stat_function(fun = muc_sum, color = "#638ccc", size = 1.5) +
+  stat_function(fun = vmp, color = "#ca5670", size = 1.5) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    title = element_text(size = 24),
+    axis.text.x = element_text(size = 24, color = "#eeeeee"), axis.text.y = element_text(size = 24, color = "#eeeeee"),
+    axis.title.x = element_text(size = 24), axis.title.y = element_text(size = 24),
+    panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(),
+    panel.background = element_rect(fill = "#eeeeee",colour = NA),
+    plot.background = element_rect(fill = "#eeeeee",colour = NA),
+    axis.line = element_line(colour = "black")
+  ) +
+  lims(x = c(0, 30), y = c(0, 50)) +
+  labs(x = "Emisiones",
+       y = "Pesos",
+       title = "Costo de la utilidad marginal iguala \nValor del producto marginal")
+
+```
+
+![Optimal taxation equates sum of MUCs to VMP](`r knitr::fig_chunk("emissions_taxation", "png")`)
+]
+.pull-right[
+$-p_x\left[{\partial U_i \over \partial E}\bigg/{\partial U_i \over \partial x_i}\right]$ es el costo de la utilidad marginal individual de las emisiones (muc)
+
+$p_x {\partial f \over \partial E}$ es el valor del producto marginal de las emisiones (VMP).
+En el óptimo de Pareto, la suma de las MUCs debe ser igual al VMP.
+MC de las emisiones debe ser igual MB
+]
+---
+# Impuesto a las emisiones: Abatimiento
+.pull-left[
+```{r emissions_taxation_2, echo = FALSE, fig.show = 'hide', warning = F}
+vmp <- function(x) x
+muc1 <- function(x) 10 - 0.5 * x
+muc2 <- function(x) 5 - 0.5 * x
+muc_sum <- function(x) 60/4 - 1/4*x
+ggplot() +
+  annotate("segment", x = 0, xend = 12, y = 12, yend = 12,
+           linetype = "dashed", size = 1.5, color = "grey50") +
+  annotate("segment", x = 12, xend = 12, y = 0, yend = 12,
+           linetype = "dashed", size = 1.5, color = "grey50") +
+  annotate("text", x = 5.5, y = 0.5, label = "MUB1", size = 8) +
+  annotate("text", x = 23, y = 0.5, label = "MUB2", size = 8) +
+  annotate("text", x = 25, y = 11, label = "Sum of MUB", size = 8) +
+  annotate("text", x = 17, y = 15, label = "MC", size = 8) +
+  stat_function(fun = muc1, color = "#638ccc", size = 1.5) +
+  stat_function(fun = muc2, color = "#638ccc", size = 1.5) +
+  stat_function(fun = muc_sum, color = "#638ccc", size = 1.5) +
+  stat_function(fun = vmp, color = "#ca5670", size = 1.5) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    title = element_text(size = 24),
+    axis.text.x = element_text(size = 24, color = "#eeeeee"), axis.text.y = element_text(size = 24, color = "#eeeeee"),
+    axis.title.x = element_text(size = 24), axis.title.y = element_text(size = 24),
+    panel.grid.minor.x = element_blank(), panel.grid.major.y = element_blank(),
+    panel.grid.minor.y = element_blank(), panel.grid.major.x = element_blank(),
+    panel.background = element_rect(fill = "#eeeeee",colour = NA),
+    plot.background = element_rect(fill = "#eeeeee",colour = NA),
+    axis.line = element_line(colour = "black")
+  ) +
+  lims(x = c(0, 30), y = c(0, 15)) +
+  labs(x = "Abatimiento",
+       y = "Pesos",
+       title = "Beneficio de la utilidad marginal igual \n costo marginal")
+
+```
+
+![Optimal taxation equates sum of MUCs to VMP](`r knitr::fig_chunk("emissions_taxation_2", "png")`)
+]
+.pull-right[
+El abatimiento $A^*$ es cuánto reducimos las emisiones por debajo del baseline: $A^* = \bar{E} - E^*$.
+
+$-p_x\left[{\partial U_i \over \partial E}\bigg/{\partial U_i \over \partial x_i}\right]$ es el beneficio de la utilidad marginal individual
+
+$p_x {\partial f \over \partial E}$ es el costo marginal del abatimiento
+]
